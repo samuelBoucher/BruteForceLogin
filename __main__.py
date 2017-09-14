@@ -1,4 +1,5 @@
 from optparse import OptionParser
+from DictionaryReader import DictionaryReader
 
 
 class BruteForceLogin:
@@ -9,8 +10,9 @@ class BruteForceLogin:
 
     def execute(self):
         self.get_args()
-
         self.print_welcome()
+        dictionary_reader = DictionaryReader(self.dict_name)
+        passwords = dictionary_reader.read()
 
     def get_args(self):
         parser = self.get_parser()
@@ -26,10 +28,10 @@ class BruteForceLogin:
         return parser
 
     def set_attributes(self, options):
-        url = options.url
-        dict_name = options.dict
-        username = options.username
-        passname = options.passname
+        self.url = options.url
+        self.dict_name = options.dict
+        self.username = options.username
+        self.passname = options.passname
 
     def print_welcome(self):
         print("Bienvenue à BruteForceLogin!")
