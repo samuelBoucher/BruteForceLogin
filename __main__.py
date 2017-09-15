@@ -1,6 +1,6 @@
 from optparse import OptionParser
 from DictionaryReader import DictionaryReader
-
+from time import time
 
 class BruteForceLogin:
     url = ''
@@ -8,11 +8,17 @@ class BruteForceLogin:
     username = ''
     passname = ''
 
+    start = 0
+    end = 0
+
+
     def execute(self):
         self.get_args()
         self.print_welcome()
         dictionary_reader = DictionaryReader(self.dict_name)
         passwords = dictionary_reader.read()
+        for password in passwords:
+            print(password)
 
     def get_args(self):
         parser = self.get_parser()

@@ -10,10 +10,16 @@ class DictionaryReader:
 
     def read(self):
         path = self.dictionaries_root + self.dict_name
+        passwords = []
         if exists(path):
-            print("ok")
+            with (open(path)) as dict:
+                for line in dict:
+                    password = line.rstrip("\n")  # On enlève le retour de chariot de chaque ligne
+                    passwords.append(password)
         else:
             print("Dictionaire introuvable...")
+
+        return passwords
 
 
 
