@@ -1,9 +1,12 @@
-from DictionaryReader import DictionaryReader
-from robobrowser import RoboBrowser
-from bs4 import BeautifulSoup
-from httplib2 import Http
 import sys
 from time import time
+
+from bs4 import BeautifulSoup
+from httplib2 import Http
+from robobrowser import RoboBrowser
+
+from DictionaryReader import DictionaryReader
+from Messages import Messages
 
 
 class BruteForceLogin:
@@ -28,12 +31,13 @@ class BruteForceLogin:
         browser = self.set_browser()
         form = self.get_form(browser)
 
-        username_to_enter = input("Entrez le nom de l'utilisateur pour qui vous voulez trouver le mot de passe: ")
+        username_to_enter = input(Messages.ENTER_USERNAME)
 
         for password in passwords:
             self.try_password(browser, form, password, username_to_enter)
 
-        print("Aucun mot de passe n'a été trouvé pour l'utilisateur " + username_to_enter + ".")
+        print(Messages.USERNAME_NOT_FOUND + username_to_enter + Messages.CLOSING_APPLICATION)
+        sys.exit(1)
 
     def set_browser(self):
         browser = RoboBrowser(history=True)
@@ -61,7 +65,7 @@ class BruteForceLogin:
                                                          # devient
                                                          # uid
 
-        print("Le formulaire avec les noms de champs spécifiés sont introuvables, fermeture de l'application")
+        print(Messages.FIELD_NAME_NOT_FOUND)
         sys.exit(1)
 
     def try_password(self, browser, form, password, username_to_enter):
@@ -71,11 +75,11 @@ class BruteForceLogin:
         browser.submit_form(form)
         if browser.url != self.args_dictionary["url"]:
             minutes_elapsed = self.get_minutes_elapsed()
-            print("Mot de passe trouvé en " + minutes_elapsed + " minutes: " + password)
+            print(Messages.PASSWORD_FOUND + minutes_elapsed + Messages.MINUTES + password)
             sys.exit(1)
         else:
-            print("le mot de passe " + password + " n\'a pas fonctionné...")
-            
+            print(Messages.PASSWORD + password + Messages.HASNT_WORKED)
+
     def get_minutes_elapsed(self):
         self.end_time = time()
         hours, rem = divmod(self.end_time - self.start_time, 3600)

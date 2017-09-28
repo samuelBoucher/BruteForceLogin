@@ -1,4 +1,6 @@
 from os.path import exists
+import sys
+from Messages import Messages
 
 
 class DictionaryReader:
@@ -12,12 +14,13 @@ class DictionaryReader:
         path = self.dictionaries_root + self.dict_name
         passwords = []
         if exists(path):
-            with (open(path)) as dict:
-                for line in dict:
+            with (open(path)) as dictionary:
+                for line in dictionary:
                     password = line.rstrip("\n")  # On enlève le retour de chariot de chaque ligne
                     passwords.append(password)
         else:
-            print("Dictionaire introuvable...")
+            print(Messages.DICTIONARY_NOT_FOUND)
+            sys.exit(1)
 
         return passwords
 
