@@ -1,4 +1,7 @@
+import requests
 from robobrowser import RoboBrowser
+
+from src.exceptions.BadUrlError import BadUrlError
 
 
 class BrowserService:
@@ -7,13 +10,20 @@ class BrowserService:
         self.browser = RoboBrowser(parser='html.parser')
         self.base_url = url
 
+        self.validate_url(url)
+
         self.browser.open(self.base_url)
+
+    def validate_url(self, url):
+        request = requests.get(url)
+        if request.status_code != 200:
+            raise BadUrlError()
 
     def get_form(self, form_name):
         return self.browser.get_form(form_name)
 
-    def submit_form(self, form):
-        self.browser.submit_form(form)
-
     def verify_url_has_changed(self):
         return self.base_url != self.browser.url
+
+    def submit_form(self, form):
+        self.browser.submit_form(form)
