@@ -26,15 +26,14 @@ class BruteForceLogin:
     def execute(self):
         form = self.get_form()
         passwords = self.read_dictionary()
-        username_to_enter = input(Messages.ENTER_USERNAME)
+        username = input(Messages.ENTER_USERNAME)
 
         self.timer.start()
 
         for password in passwords:
-            self.try_password(form, password, username_to_enter)
+            self.try_password(form, password, username)
 
-        print(Messages.USERNAME_NOT_FOUND + username_to_enter + Messages.CLOSING_APPLICATION)
-        sys.exit(1)
+        self.username_unsuccessful(username)
 
     def get_form(self):
         form_name = self.form_name_finder.get_form_name(
@@ -58,10 +57,20 @@ class BruteForceLogin:
     def check_password_validity(self, password):
         if self.browser_service.verify_url_has_changed():
             minutes_elapsed = self.timer.get_minutes_elapsed()
-            print(Messages.PASSWORD_FOUND + minutes_elapsed + Messages.MINUTES + password)
+            self.print_password_found(minutes_elapsed, password)
             sys.exit(1)
         else:
-            print(Messages.PASSWORD + password + Messages.HASNT_WORKED)
+            self.print_password_unsuccessful(password)
+
+    def print_password_found(self, minutes_elapsed, password):
+        Messages.print_password_found(minutes_elapsed, password)
+
+    def print_password_unsuccessful(self, password):
+        Messages.print_password_unsuccessful(password)
+
+    def username_unsuccessful(self, username):
+        Messages.print_username_not_found(username)
+        sys.exit(1)
 
 
 

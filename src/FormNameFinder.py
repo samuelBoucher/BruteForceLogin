@@ -23,6 +23,6 @@ class FormNameFinder:
                                                                 # devient
                                                                 # uid
 
-        error_message = Messages.print_form_not_found(username, passname)
+        error_message = Messages.get_form_not_found_message(username, passname)
         raise FormNotFoundError(error_message)
 

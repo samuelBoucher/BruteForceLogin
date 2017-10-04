@@ -18,7 +18,7 @@ class BrowserService:
     def validate_url(self, url):
         request = requests.get(url)
         if request.status_code != 200:
-            message = Messages.print_url_not_found(url)
+            message = Messages.get_url_not_found_message(url)
             raise BadUrlError(message)
 
     def get_form(self, form_name):

@@ -9,16 +9,28 @@ class Messages:
     HASNT_WORKED = " n\'a pas fonctionné..."
 
     @staticmethod
-    def print_url_not_found(url):
+    def get_url_not_found_message(url):
         return "L'url " + url + " n\'a pas été trouvé"
 
     @staticmethod
-    def print_dict_not_found(path):
+    def get_dict_not_found_message(path):
         return "Le dictionaire situé au chemin " + path + " n\'a pas été trouvé"
 
     @staticmethod
-    def print_form_not_found(username, passname):
-        return "Le formulaire avec le nom de champ d\'utilisateur \'" + username + "\'\n " \
-                "et le nom de champ de mot de passe \'" + passname + "\'\n " \
+    def get_form_not_found_message(user_field, password_field):
+        return "Le formulaire avec le nom de champ d\'utilisateur \'" + user_field + "\'\n " \
+                "et le nom de champ de mot de passe \'" + password_field + "\'\n " \
                 "n\'a pas été trouvé"
+
+    @staticmethod
+    def print_username_not_found(username):
+        print("Le mot de passe de l'utilisateur " + username + " n\' a pas été trouvé")
+
+    @staticmethod
+    def print_password_found(minutes_elapsed, password):
+        print("Mot de passe trouvé en " + minutes_elapsed + " minutes: " + password)
+
+    @staticmethod
+    def print_password_unsuccessful(password):
+        print("Le mot de passe " + password + " n'a pas fonctionné...")
 

@@ -18,7 +18,7 @@ class DictionaryReader:
                     password = line.rstrip("\n")  # On enlève le retour de chariot de chaque ligne
                     passwords.append(password)
         else:
-            message = Messages.print_dict_not_found(path)
+            message = Messages.get_dict_not_found_message(path)
             raise DictionaryNotFoundError(message)
 
         return passwords
