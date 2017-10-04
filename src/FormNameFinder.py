@@ -1,6 +1,6 @@
 import sys
 
-from src.Messages import Messages
+from src.MessageAdministrator import MessageAdministrator
 from src.services.BeautifulSoupService import BeautifulSoupService
 from src.exceptions.FormNotFoundError import FormNotFoundError
 
@@ -23,6 +23,6 @@ class FormNameFinder:
                                                                 # devient
                                                                 # uid
 
-        error_message = Messages.get_form_not_found_message(username, passname)
+        error_message = MessageAdministrator.get_form_not_found_message(username, passname)
         raise FormNotFoundError(error_message)
 

@@ -1,6 +1,11 @@
 from optparse import OptionParser
 
 from src.BruteForceLogin import BruteForceLogin
+from src.DictionaryReader import DictionaryReader
+from src.FormNameFinder import FormNameFinder
+from src.MessageAdministrator import MessageAdministrator
+from src.Timer import Timer
+from src.services.BrowserService import BrowserService
 
 
 class Main:
@@ -9,7 +14,18 @@ class Main:
         print("Bienvenue à BruteForceLogin.py!")
 
         args_dictionary = self.get_args()
-        BruteForceLogin(args_dictionary)
+        message_administrator = MessageAdministrator()
+        timer = Timer()
+        form_name_finder = FormNameFinder()
+        dictionary_reader = DictionaryReader(args_dictionary["dict"])
+        browser_service = BrowserService(args_dictionary["url"])
+        BruteForceLogin(
+            args_dictionary,
+            message_administrator,
+            timer,
+            form_name_finder,
+            dictionary_reader,
+            browser_service)
 
     def get_args(self):
         parser = self.get_parser()

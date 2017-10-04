@@ -2,10 +2,12 @@ import requests
 from robobrowser import RoboBrowser
 
 from src.exceptions.BadUrlError import BadUrlError
-from src.Messages import Messages
+from src.MessageAdministrator import MessageAdministrator
 
 
 class BrowserService:
+
+    form = None
 
     def __init__(self, url):
         self.browser = RoboBrowser(parser='html.parser')
@@ -18,14 +20,19 @@ class BrowserService:
     def validate_url(self, url):
         request = requests.get(url)
         if request.status_code != 200:
-            message = Messages.get_url_not_found_message(url)
+            message = MessageAdministrator.get_url_not_found_message(url)
             raise BadUrlError(message)
 
-    def get_form(self, form_name):
-        return self.browser.get_form(form_name)
+    def set_form(self, form_name):
+        self.form = self.browser.get_form(form_name)
+
+    def fill_form(self, user_field, password_field, password, username_to_enter):
+        self.form[user_field].value = username_to_enter
+        self.form[password_field].value = password
+        self.form.serialize()
+
+        self.browser.submit_form(self.form)
 
     def verify_url_has_changed(self):
         return self.base_url != self.browser.url
 
-    def submit_form(self, form):
-        self.browser.submit_form(form)
