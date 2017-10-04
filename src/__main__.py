@@ -19,13 +19,15 @@ class Main:
         form_name_finder = FormNameFinder()
         dictionary_reader = DictionaryReader(args_dictionary["dict"])
         browser_service = BrowserService(args_dictionary["url"])
-        BruteForceLogin(
+        brute_force_login = BruteForceLogin(
             args_dictionary,
             message_administrator,
             timer,
             form_name_finder,
             dictionary_reader,
             browser_service)
+
+        brute_force_login.execute()
 
     def get_args(self):
         parser = self.get_parser()

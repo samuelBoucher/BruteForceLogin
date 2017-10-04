@@ -3,6 +3,10 @@ import sys
 from src.MessageAdministrator import MessageAdministrator
 
 
+def input_value(input_message):
+    return input(input_message)
+
+
 class BruteForceLogin:
 
     def __init__(self,
@@ -21,17 +25,21 @@ class BruteForceLogin:
         self.dictionary_reader = reader
         self.browser_service = service
 
-        self.execute()
+        self.input_function = input_value
+
+        self.password_found = False
 
     def execute(self):
         self.set_form()
         passwords = self.read_dictionary()
-        username = input(MessageAdministrator.ENTER_USERNAME)
+        username = self.input_function(MessageAdministrator.ENTER_USERNAME)
 
         self.timer.start()
 
         for password in passwords:
             self.try_password(password, username)
+            if self.password_found:
+                return
 
         self.username_unsuccessful(username)
 
@@ -58,8 +66,8 @@ class BruteForceLogin:
     def check_password_validity(self, password):
         if self.browser_service.verify_url_has_changed():
             minutes_elapsed = self.timer.get_minutes_elapsed()
+            self.password_found = True
             self.print_password_found(minutes_elapsed, password)
-            sys.exit(1)
         else:
             self.print_password_unsuccessful(password)
 
@@ -71,7 +79,6 @@ class BruteForceLogin:
 
     def username_unsuccessful(self, username):
         self.message_administrator.print_username_not_found(username)
-        sys.exit(1)
 
 
 

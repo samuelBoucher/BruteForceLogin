@@ -1,0 +1,65 @@
+import unittest
+from unittest.mock import Mock
+
+from src.BruteForceLogin import BruteForceLogin
+from tests.MockPrintAnswer import MockPrintAnswer
+from src.MessageAdministrator import MessageAdministrator
+
+
+class BruteForceLoginTest(unittest.TestCase):
+
+    def setUp(self):
+        self.args_dictionary = {
+            "url": "url",
+            "dict": "dict",
+            "username": "username",
+            "passname": "passname"
+        }
+
+        self.mock_print = MockPrintAnswer()
+
+        self.message_administrator = MessageAdministrator()
+        self.message_administrator.print_function = self.mock_print.print_answer
+
+        self.timer = Mock()
+        self.form_name_finder = Mock()
+        self.dictionary_reader = Mock()
+        self.browser_service = Mock()
+        self.input_value = Mock()
+
+        self.brute_force_login = \
+            BruteForceLogin(self.args_dictionary,
+                            self.message_administrator,
+                            self.timer,
+                            self.form_name_finder,
+                            self.dictionary_reader,
+                            self.browser_service)
+
+        self.brute_force_login.input_function = self.input_value
+
+        self.form_name_finder.get_form_name.return_value = "login"
+        self.dictionary_reader.read.return_value = ["royalcanin"]
+        self.input_value.return_value = "admin"
+        self.timer.get_minutes_elapsed.return_value = "15"
+
+    def test_passwordIsFound_shouldPrintPasswordFound(self):
+        EXPECTED_ANSWER = 'Mot de passe trouvé en 15 minutes: royalcanin'
+        self.browser_service.verify_url_has_changed.return_value = True
+
+        self.brute_force_login.execute()
+
+        self.assertTrue(EXPECTED_ANSWER in self.mock_print.printed_answers)
+        self.mock_print.delete_all_answers()
+
+    def test_passwordIsNotFound_shouldPrintPasswordNotFound(self):
+        EXPECTED_ANSWER = "Le mot de passe royalcanin n'a pas fonctionné..."
+        self.browser_service.verify_url_has_changed.return_value = False
+
+        self.brute_force_login.execute()
+
+        self.assertTrue(EXPECTED_ANSWER in self.mock_print.printed_answers)
+        self.mock_print.delete_all_answers()
+
+if __name__ == '__main__':
+    unittest.main()
+
