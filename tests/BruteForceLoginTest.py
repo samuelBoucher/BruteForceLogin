@@ -60,6 +60,17 @@ class BruteForceLoginTest(unittest.TestCase):
         self.assertTrue(EXPECTED_ANSWER in self.mock_print.printed_answers)
         self.mock_print.delete_all_answers()
 
+    def test_noPasswordFound_shouldPrintUsernameUnsuccessful(self):
+        EXPECTED_ANSWER = "Le mot de passe de l'utilisateur admin n'a pas été trouvé"
+        self.browser_service.verify_url_has_changed.return_value = False
+
+        self.brute_force_login.execute()
+
+        print(self.mock_print.printed_answers)
+        self.assertTrue(EXPECTED_ANSWER in self.mock_print.printed_answers)
+        self.mock_print.delete_all_answers()
+
+
 if __name__ == '__main__':
     unittest.main()
 

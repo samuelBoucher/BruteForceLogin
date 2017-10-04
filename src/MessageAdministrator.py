@@ -23,11 +23,11 @@ class MessageAdministrator:
                 "n\'a pas été trouvé"
 
     def print_username_not_found(self, username):
-        self.print_function("Le mot de passe de l'utilisateur " + username + " n\' a pas été trouvé")
+        self.print_function("Le mot de passe de l'utilisateur " + username + " n\'a pas été trouvé")
 
     def print_password_found(self, minutes_elapsed, password):
         self.print_function("Mot de passe trouvé en " + minutes_elapsed + " minutes: " + password)
 
     def print_password_unsuccessful(self, password):
-        self.print_function("Le mot de passe " + password + " n'a pas fonctionné...")
+        self.print_function("Le mot de passe " + password + " n\'a pas fonctionné...")
 
