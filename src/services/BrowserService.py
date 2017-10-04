@@ -2,6 +2,7 @@ import requests
 from robobrowser import RoboBrowser
 
 from src.exceptions.BadUrlError import BadUrlError
+from src.Messages import Messages
 
 
 class BrowserService:
@@ -17,7 +18,8 @@ class BrowserService:
     def validate_url(self, url):
         request = requests.get(url)
         if request.status_code != 200:
-            raise BadUrlError()
+            message = Messages.print_url_not_found(url)
+            raise BadUrlError(message)
 
     def get_form(self, form_name):
         return self.browser.get_form(form_name)

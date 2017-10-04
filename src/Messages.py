@@ -1,5 +1,4 @@
 class Messages:
-    DICTIONARY_NOT_FOUND = "Dictionaire introuvable, fermeture de l'application"
     ENTER_USERNAME = "Entrez le nom de l'utilisateur pour qui vous voulez trouver le mot de passe: "
     USERNAME_NOT_FOUND = "Aucun mot de passe n'a été trouvé pour l'utilisateur "
     CLOSING_APPLICATION = ", fermeture de l'application"
@@ -8,4 +7,12 @@ class Messages:
     MINUTES = " minutes: "
     PASSWORD = "Le mot de passe "
     HASNT_WORKED = " n\'a pas fonctionné..."
-    URL_NOT_FOUND = "L'URL mentionné n'a pas été trouvé, fermeture de l'application"
+
+    @staticmethod
+    def print_url_not_found(url):
+        return "L'url " + url + " n\'a pas été trouvé"
+
+    @staticmethod
+    def print_dict_not_found(path):
+        return "Le dictionaire situé au chemin " + path + " n\'a pas été trouvé"
+

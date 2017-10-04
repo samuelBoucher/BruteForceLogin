@@ -1,8 +1,6 @@
 import os
-import sys
-
+from src.exceptions.DictionaryNotFoundError import DictionaryNotFoundError
 from src.Messages import Messages
-
 
 class DictionaryReader:
     dictionaries_root = os.getcwd() + "\\Dictionaries\\"
@@ -20,8 +18,8 @@ class DictionaryReader:
                     password = line.rstrip("\n")  # On enlève le retour de chariot de chaque ligne
                     passwords.append(password)
         else:
-            print(Messages.DICTIONARY_NOT_FOUND)
-            sys.exit(1)
+            message = Messages.print_dict_not_found(path)
+            raise DictionaryNotFoundError(message)
 
         return passwords
 
