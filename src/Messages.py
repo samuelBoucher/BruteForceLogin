@@ -16,3 +16,9 @@ class Messages:
     def print_dict_not_found(path):
         return "Le dictionaire situé au chemin " + path + " n\'a pas été trouvé"
 
+    @staticmethod
+    def print_form_not_found(username, passname):
+        return "Le formulaire avec le nom de champ d\'utilisateur \'" + username + "\'\n " \
+                "et le nom de champ de mot de passe \'" + passname + "\'\n " \
+                "n\'a pas été trouvé"
+
