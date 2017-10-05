@@ -8,6 +8,10 @@ from src.MessageAdministrator import MessageAdministrator
 
 class BruteForceLoginTest(unittest.TestCase):
 
+    USERNAME = "admin"
+    PASSWORD = "royalcanin"
+    MINUTES = "15"
+
     def setUp(self):
         self.args_dictionary = {
             "url": "url",
@@ -43,7 +47,10 @@ class BruteForceLoginTest(unittest.TestCase):
         self.timer.get_minutes_elapsed.return_value = "15"
 
     def test_passwordIsFound_shouldPrintPasswordFound(self):
-        EXPECTED_ANSWER = 'Mot de passe trouvé en 15 minutes: royalcanin'
+        EXPECTED_ANSWER = MessageAdministrator.PASSWORD_FOUND + \
+                          self.MINUTES + \
+                          MessageAdministrator.MINUTES + \
+                          self.PASSWORD
         self.browser_service.verify_url_has_changed.return_value = True
 
         self.brute_force_login.execute()
@@ -52,7 +59,9 @@ class BruteForceLoginTest(unittest.TestCase):
         self.mock_print.delete_all_answers()
 
     def test_passwordIsNotFound_shouldPrintPasswordNotFound(self):
-        EXPECTED_ANSWER = "Le mot de passe royalcanin n'a pas fonctionné..."
+        EXPECTED_ANSWER = MessageAdministrator.PASSWORD + \
+                            self.PASSWORD \
+                            + MessageAdministrator.DIDNT_WORK
         self.browser_service.verify_url_has_changed.return_value = False
 
         self.brute_force_login.execute()
@@ -61,7 +70,9 @@ class BruteForceLoginTest(unittest.TestCase):
         self.mock_print.delete_all_answers()
 
     def test_noPasswordFound_shouldPrintUsernameUnsuccessful(self):
-        EXPECTED_ANSWER = "Le mot de passe de l'utilisateur admin n'a pas été trouvé"
+        EXPECTED_ANSWER = MessageAdministrator.USERS_PASSWORD \
+                            + self.USERNAME \
+                            + MessageAdministrator.NOT_FOUND
         self.browser_service.verify_url_has_changed.return_value = False
 
         self.brute_force_login.execute()
