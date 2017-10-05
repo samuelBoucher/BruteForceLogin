@@ -13,24 +13,31 @@ class BruteForceLoginTest(unittest.TestCase):
     MINUTES = "15"
 
     def setUp(self):
-        self.args_dictionary = {
+        self.args_dictionary = self.create_args_dictionary()
+        self.create_mocks()
+        self.create_brute_force_login()
+        self.brute_force_login.input_function = self.input_value
+        self.set_return_values()
+
+    def create_args_dictionary(self):
+        return {
             "url": "url",
             "dict": "dict",
             "username": "username",
             "passname": "passname"
         }
 
+    def create_mocks(self):
         self.mock_print = MockPrintAnswer()
-
         self.message_administrator = MessageAdministrator()
         self.message_administrator.print_function = self.mock_print.print_answer
-
         self.timer = Mock()
         self.form_name_finder = Mock()
         self.dictionary_reader = Mock()
         self.browser_service = Mock()
         self.input_value = Mock()
 
+    def create_brute_force_login(self):
         self.brute_force_login = \
             BruteForceLogin(self.args_dictionary,
                             self.message_administrator,
@@ -39,8 +46,7 @@ class BruteForceLoginTest(unittest.TestCase):
                             self.dictionary_reader,
                             self.browser_service)
 
-        self.brute_force_login.input_function = self.input_value
-
+    def set_return_values(self):
         self.form_name_finder.get_form_name.return_value = "login"
         self.dictionary_reader.read.return_value = ["royalcanin"]
         self.input_value.return_value = "admin"
